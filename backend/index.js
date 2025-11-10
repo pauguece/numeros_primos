@@ -57,12 +57,12 @@ app.post("/api/calcular", (req, res) => {
 });
 
 // --- Servir React (frontend afuera del backend) ---
-const buildPath = path.join(__dirname, "../frontend/build"); // <-- ruta relativa al frontend
+const buildPath = path.join(__dirname, "../frontend/build"); // ruta relativa al frontend
 if (fs.existsSync(buildPath)) {
   app.use(express.static(buildPath));
 
-  // Catch-all para React
-  app.get("*", (req, res) => {
+  // Catch-all sin usar '*' con router externo, evitando PathError
+  app.use((req, res) => {
     res.sendFile(path.join(buildPath, "index.html"));
   });
 }
