@@ -22,7 +22,8 @@ function App() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/calcular", {
+      // <-- Usamos ruta relativa para que funcione en Render
+      const res = await axios.post("/api/calcular", {
         numero: parseInt(numero),
       });
       setResultado(res.data);
@@ -41,15 +42,15 @@ function App() {
 
       <div className="input-section">
         <input
-          type="text" // cambiamos a text para controlar mejor
+          type="text"
           placeholder="Ingresa un número..."
           value={numero}
           onKeyDown={(e) => {
             // Bloquear teclas que no sean números
             if (
               !(
-                (e.key >= "0" && e.key <= "9") || // números
-                e.key === "Backspace" ||          // borrar
+                (e.key >= "0" && e.key <= "9") ||
+                e.key === "Backspace" ||
                 e.key === "Delete" ||
                 e.key === "ArrowLeft" ||
                 e.key === "ArrowRight" ||
@@ -61,7 +62,7 @@ function App() {
           }}
           onChange={(e) => {
             const valor = e.target.value;
-            if (valor.length <= 8) setNumero(valor); // límite de 8 dígitos
+            if (valor.length <= 8) setNumero(valor);
           }}
         />
         <button onClick={calcular}>Calcular</button>
