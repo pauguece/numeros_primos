@@ -73,9 +73,9 @@ app.post("/api/calcular", (req, res) => {
 });
 
 // --- Servir React en producción ---
-app.use(express.static(path.join(__dirname, "client/build"))); // ← cambiar "client/build" si tu build está en otra carpeta
+app.use(express.static(path.join(__dirname, "frontend/build"))); // ← cambiar "frontend/build" si tu build está en otra carpeta
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
 });
 
 const PORT = process.env.PORT || 5000; // ← usar el puerto de Render
