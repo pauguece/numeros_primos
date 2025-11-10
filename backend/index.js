@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path"); // ← agregar
+const path = require("path");
+const fs = require("fs");
+
 const app = express();
 
 app.use(cors());
@@ -23,60 +25,48 @@ app.post("/api/calcular", (req, res) => {
   // --- Raíz cuadrada entera ---
   let raiz = 0;
   while ((raiz + 1) * (raiz + 1) <= n) {
-    raiz = raiz + 1;
+    raiz++;
   }
 
   // --- Residuo ---
   const residuo = n - raiz * raiz;
 
   // --- Verificar si es primo ---
-  let esPrimo = true;
-  if (n < 2) esPrimo = false;
-  else {
-    let i = 2;
-    while (i <= n / 2) {
-      if (n % i === 0) {
-        esPrimo = false;
-        break;
-      }
-      i = i + 1;
-    }
+  let esPrimo = n >= 2;
+  for (let i = 2; i <= n / 2 && esPrimo; i++) {
+    if (n % i === 0) esPrimo = false;
   }
 
   // --- Factores primos ≤ raíz ---
-  let factores = "";
-  let candidato = 2;
-  while (candidato <= raiz) {
+  let factores = [];
+  for (let candidato = 2; candidato <= raiz; candidato++) {
     let primo = true;
-    let j = 2;
-    while (j <= candidato / 2) {
-      if (candidato % j === 0) {
-        primo = false;
-        break;
-      }
-      j = j + 1;
+    for (let j = 2; j <= candidato / 2 && primo; j++) {
+      if (candidato % j === 0) primo = false;
     }
-    if (primo) {
-      factores = factores + candidato + " ";
-    }
-    candidato = candidato + 1;
+    if (primo) factores.push(candidato);
   }
-  if (factores === "") factores = "No hay factores primos.";
 
   res.json({
     numero: n,
     esPrimo,
     raiz,
     residuo,
-    factores
+    factores: factores.length > 0 ? factores.join(" ") : "No hay factores primos."
   });
 });
 
 // --- Servir React en producción ---
-app.use(express.static(path.join(__dirname, "frontend/build"))); // ← cambiar "frontend/build" si tu build está en otra carpeta
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
-});
+const buildPath = path.join(__dirname, "frontend/build");
+if (fs.existsSync(buildPath)) {
+  app.use(express.static(buildPath));
 
-const PORT = process.env.PORT || 5000; // ← usar el puerto de Render
+  // Ruta catch-all para React
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
+}
+
+// --- Levantar servidor ---
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
