@@ -56,12 +56,12 @@ app.post("/api/calcular", (req, res) => {
   });
 });
 
-// --- Servir React en producción ---
-const buildPath = path.join(__dirname, "frontend/build");
+// --- Servir React (frontend afuera del backend) ---
+const buildPath = path.join(__dirname, "../frontend/build"); // <-- ruta relativa al frontend
 if (fs.existsSync(buildPath)) {
   app.use(express.static(buildPath));
 
-  // Ruta catch-all para React
+  // Catch-all para React
   app.get("*", (req, res) => {
     res.sendFile(path.join(buildPath, "index.html"));
   });
