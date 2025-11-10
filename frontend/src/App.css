@@ -33,7 +33,7 @@ input:focus {
 
 button {
   padding: 10px 20px;
-  background-color: #4caf50;
+  background-color: #dc7267;
   border: none;
   color: white;
   cursor: pointer;
@@ -43,7 +43,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #a5554c;
 }
 
 .error {
@@ -55,9 +55,9 @@ button:hover {
 .resultado {
   max-width: 320px;
   margin: 0 auto;
-  border: 2px solid #4caf50;
+  border: 2px solid #377979;
   border-radius: 12px;
-  background-color: #f5fff5;
+  background-color: #d3f0f6;
   padding: 20px;
   text-align: left;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
