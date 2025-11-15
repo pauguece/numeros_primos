@@ -27,8 +27,8 @@ function App() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/calcular", {
-        //const res = await axios.post("/api/calcular", {
+      //const res = await axios.post("http://localhost:5000/api/calcular", {
+      const res = await axios.post("/api/calcular", {
         numero: parseInt(numero),
       });
       setResultado(res.data);
