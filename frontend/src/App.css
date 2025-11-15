@@ -43,7 +43,7 @@ button {
 }
 
 button:hover {
-  background-color: #a5554c;
+  background-color: #ef9e95;
 }
 
 .error {
@@ -69,7 +69,24 @@ button:hover {
   font-size: 16px;
 }
 
+/* Estilo extra SOLO para el botón limpiar */
+.btn-limpiar {
+  padding: 10px 20px;
+  background-color: #568f8a;     
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.btn-limpiar:hover {
+  background-color: #74a5a1;   
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+

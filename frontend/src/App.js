@@ -21,9 +21,14 @@ function App() {
       return;
     }
 
+    if (parseInt(numero) <= 1) {
+      setError("El número debe ser mayor a 1, debido a que el 1 y el 0 no son números primos ni números compuestos.");
+      return;
+    }
+
     try {
-      // <-- Usamos ruta relativa para que funcione en Render
-      const res = await axios.post("/api/calcular", {
+      const res = await axios.post("http://localhost:5000/api/calcular", {
+        //const res = await axios.post("/api/calcular", {
         numero: parseInt(numero),
       });
       setResultado(res.data);
@@ -31,9 +36,15 @@ function App() {
       if (err.response?.data?.error) {
         setError(err.response.data.error);
       } else {
-        setError("Hubo un error al conectar con el servidor.");
+        setError("Hubo un error al conectar con el servidor, cargue de nuevo la página ");
       }
     }
+  };
+
+  const limpiar = () => {
+    setNumero("");
+    setResultado(null);
+    setError("");
   };
 
   return (
@@ -43,10 +54,9 @@ function App() {
       <div className="input-section">
         <input
           type="text"
-          placeholder="Ingresa un número..."
+          placeholder="Ingresa un número"
           value={numero}
           onKeyDown={(e) => {
-            // Bloquear teclas que no sean números
             if (
               !(
                 (e.key >= "0" && e.key <= "9") ||
@@ -65,7 +75,9 @@ function App() {
             if (valor.length <= 8) setNumero(valor);
           }}
         />
+
         <button onClick={calcular}>Calcular</button>
+        <button onClick={limpiar} className="btn-limpiar">Limpiar</button>
       </div>
 
       {error && <p className="error">{error}</p>}
@@ -77,6 +89,9 @@ function App() {
           <p><strong>Raíz cuadrada entera:</strong> {resultado.raiz}</p>
           <p><strong>Residuo:</strong> {resultado.residuo}</p>
           <p><strong>Factores primos ≤ raíz:</strong> {resultado.factores}</p>
+          {!resultado.esPrimo && (
+            <p><strong>Es número COMPUESTO porque es divisible entre:</strong> {resultado.divisores}</p>
+          )}
         </div>
       )}
     </div>

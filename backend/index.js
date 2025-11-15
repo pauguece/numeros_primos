@@ -47,12 +47,19 @@ app.post("/api/calcular", (req, res) => {
     if (primo) factores.push(candidato);
   }
 
+  // --- Divisores enteros ---
+  let divisores = [];
+  for (let i = 1; i <= n; i++) {
+    if (n % i === 0) divisores.push(i);
+  }
+
   res.json({
     numero: n,
     esPrimo,
     raiz,
     residuo,
-    factores: factores.length > 0 ? factores.join(" ") : "No hay factores primos."
+    factores: factores.length > 0 ? factores.join(" ") : "No hay factores primos.",
+    divisores: divisores.length > 0 ? divisores.join(" ") : "No tiene divisores enteros."
   });
 });
 
