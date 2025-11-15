@@ -2,6 +2,49 @@ import { useState } from "react";
 import axios from "axios";
 import "./App.css";
 
+function calcularDatos(n) {
+  // --- Raíz cuadrada entera ---
+  let raiz = 0;
+  while ((raiz + 1) * (raiz + 1) <= n) {
+    raiz++;
+  }
+
+  // --- Residuo ---
+  const residuo = n - raiz * raiz;
+
+  // --- Verificar si es primo ---
+  let esPrimo = n >= 2;
+  for (let i = 2; i <= n / 2 && esPrimo; i++) {
+    if (n % i === 0) esPrimo = false;
+  }
+
+  // --- Factores primos ≤ raíz ---
+  let factores = [];
+  for (let candidato = 2; candidato <= raiz; candidato++) {
+    let primo = true;
+    for (let j = 2; j <= candidato / 2 && primo; j++) {
+      if (candidato % j === 0) primo = false;
+    }
+    if (primo) factores.push(candidato);
+  }
+
+  // --- Divisores enteros ---
+  let divisores = [];
+  for (let i = 1; i <= n; i++) {
+    if (n % i === 0) divisores.push(i);
+  }
+
+  return {
+    numero: n,
+    esPrimo,
+    raiz,
+    residuo,
+    factores: factores.length > 0 ? factores.join(" ") : "No hay factores primos.",
+    divisores: divisores.length > 0 ? divisores.join(" ") : "No tiene divisores enteros."
+  };
+}
+
+
 function App() {
   const [numero, setNumero] = useState("");
   const [resultado, setResultado] = useState(null);
@@ -28,15 +71,18 @@ function App() {
 
     try {
       //const res = await axios.post("http://localhost:5000/api/calcular", {
-      const res = await axios.post("/api/calcular", {
+      /*const res = await axios.post("/api/calcular", {
         numero: parseInt(numero),
-      });
-      setResultado(res.data);
+      });*/
+
+      const res = calcularDatos(parseInt(numero));
+      setResultado(res);
+      //setResultado(res.data);
     } catch (err) {
       if (err.response?.data?.error) {
         setError(err.response.data.error);
       } else {
-        setError("Hubo un error al conectar con el servidor, cargue de nuevo la página ");
+        setError("Hubo un error al procesar el número");
       }
     }
   };
